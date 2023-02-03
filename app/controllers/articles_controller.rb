@@ -9,14 +9,19 @@ class ArticlesController < ApplicationController
   end
 
   def new
-
+    @article = Article.new
   end
 
 
   def create
     @article = Article.new(params.require(:article).permit([:title, :description]))
-    @article.save
-    redirect_to @article
-    #render plain: @article.inspect this helps you finde what are you sending to db
+    if @article.save
+      flash[:notice] = "Article was created Successfully"
+      redirect_to @article
+    else
+      render 'new'
+    end
+    #render plain: @article.inspect this helps you find what are you sending to db
   end
+
 end
